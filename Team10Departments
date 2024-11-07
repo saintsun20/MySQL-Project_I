@@ -138,6 +138,61 @@ HAVING AVG(s.salary) = (
 ORDER BY d.dept_name, avg_salary DESC;
 
 
+-- 25
+select * from employees where first_name='Annemarie' and last_name='Redmiles';
+
+-- 26
+SELECT employees.*, salaries.salary, departments.dept_name, titles.title
+FROM employees
+LEFT JOIN salaries ON employees.emp_no = salaries.emp_no
+LEFT JOIN dept_emp ON dept_emp.emp_no=employees.emp_no
+LEFT JOIN departments ON dept_emp.dept_no = departments.dept_no
+LEFT JOIN titles ON employees.emp_no = titles.emp_no
+WHERE first_name='Annemarie' and last_name='Redmiles';
+
+-- 27
+SELECT employees.*,dept_emp.dept_no
+FROM employees
+LEFT JOIN dept_emp ON employees.emp_no = dept_emp.emp_no
+LEFT JOIN dept_manager ON employees.emp_no = dept_manager.emp_no
+WHERE dept_emp.dept_no = 'd005' OR dept_manager.dept_no = 'd005';
+
+-- 28
+SELECT employees.*, salaries.salary
+FROM employees
+JOIN salaries ON employees.emp_no=salaries.emp_no
+WHERE hire_date>='1994-02-24 23:59:59' and salaries.salary>'50000';
+
+-- 29
+SELECT employees.*, departments.dept_name
+FROM employees
+LEFT JOIN dept_manager ON dept_manager.emp_no = employees.emp_no
+LEFT JOIN departments ON departments.dept_no = dept_manager.dept_no
+WHERE departments.dept_no = 'd007';
+
+-- 30
+SELECT employees.emp_no,employees.first_name,employees.last_name,dept_emp.dept_no, departments.dept_name,
+       SUM(DATEDIFF(IFNULL(dept_emp.to_date, CURRENT_DATE), dept_emp.from_date)) AS total_duration
+FROM employees
+JOIN dept_emp ON dept_emp.emp_no=employees.emp_no
+JOIN departments ON dept_emp.dept_no = departments.dept_no
+WHERE dept_emp.emp_no = '10102'
+GROUP BY dept_emp.dept_no, departments.dept_name
+ORDER BY total_duration DESC
+LIMIT 1;
+
+-- 31
+select employees.*,salaries.salary
+from employees
+LEFT JOIN salaries ON salaries.emp_no=employees.emp_no
+order by salary desc
+LIMIT 1;
+
+-- 32
+select * from titles
+where emp_no='10102';
+
+
 
 
 
